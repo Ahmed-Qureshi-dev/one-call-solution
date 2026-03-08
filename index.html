@@ -726,63 +726,7 @@
   footer span { color: var(--orange); }
 
   /* ── FLOATING CALL BUTTON ── */
-  .floating-call {
-    position: fixed;
-    bottom: 20px; right: 16px;
-    z-index: 200;
-    background: var(--grad);
-    border: none;
-    border-radius: 60px;
-    padding: 14px 22px;
-    display: flex; align-items: center; gap: 8px;
-    cursor: pointer;
-    box-shadow: 0 8px 30px rgba(255,107,0,0.6);
-    animation: float-btn 3s ease-in-out infinite;
-    text-decoration: none;
-    color: #fff;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    max-width: calc(100vw - 32px);
-    box-sizing: border-box;
-  }
 
-  @media (max-width: 480px) {
-    .floating-call {
-      bottom: 14px;
-      right: 12px;
-      left: 12px;
-      justify-content: center;
-      font-size: 16px;
-      padding: 14px 16px;
-      border-radius: 50px;
-    }
-
-    .call-ring { display: none; }
-  }
-
-  @keyframes float-btn {
-    0%, 100% { transform: translateY(0); box-shadow: 0 8px 30px rgba(255,107,0,0.6); }
-    50% { transform: translateY(-6px); box-shadow: 0 14px 40px rgba(255,107,0,0.8); }
-  }
-
-  .call-ring {
-    position: fixed;
-    bottom: 32px; right: 32px;
-    z-index: 199;
-    width: 60px; height: 60px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,107,0,0.5);
-    animation: ring-out 2s ease-out infinite;
-    pointer-events: none;
-  }
-
-  @keyframes ring-out {
-    0% { transform: scale(1); opacity: 0.7; bottom: 38px; right: 86px; }
-    100% { transform: scale(2.5); opacity: 0; bottom: 38px; right: 86px; }
-  }
 
   /* scroll reveal */
   .reveal {
@@ -905,12 +849,7 @@
       width: 100%;
     }
 
-    .floating-call {
-      bottom: 16px;
-      right: 16px;
-      padding: 14px 20px;
-      font-size: 14px;
-    }
+  
 
     footer {
       padding: 24px 20px;
@@ -1157,9 +1096,7 @@
   <div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.25);">Designed &amp; Developed by <span style="color:var(--orange);font-weight:600;">Ahmed Qureshi</span></div>
 </footer>
 
-<!-- FLOATING CALL BUTTON -->
-<div class="call-ring"></div>
-<a href="https://wa.me/923313600964" target="_blank" class="floating-call">📞 Call Now</a>
+
 
 <script>
   // ── Speed Lines ──
@@ -1229,13 +1166,27 @@
 <script>
   const hamburger = document.getElementById('hamburger');
   const navRight = document.getElementById('navRight');
-  hamburger.addEventListener('click', () => {
+
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
     hamburger.classList.toggle('open');
     navRight.classList.toggle('open');
+    document.body.style.overflow = navRight.classList.contains('open') ? 'hidden' : '';
   });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (navRight.classList.contains('open') && !navRight.contains(e.target) && !hamburger.contains(e.target)) {
+      hamburger.classList.remove('open');
+      navRight.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+
   function closeMenu() {
     hamburger.classList.remove('open');
     navRight.classList.remove('open');
+    document.body.style.overflow = '';
   }
 </script>
 </body>
